@@ -14,7 +14,6 @@ F5.nodeState = function(baseUrl, partition, nodeName) {
 		console.log('Missing password parameter in settings.json')
 
 	var f5Auth = Meteor.settings.f5.user + ':' +  Meteor.settings.f5.password
-	console.log(f5Auth)
 
 	var f5Response = HTTP.call("GET", url, {
 		timeout: 5000,
