@@ -23,7 +23,7 @@ F5.nodeState = function(baseUrl, partition, nodeName) {
 	if(f5Response && f5Response.statusCode === 200) {
 		return f5Response.data.state
 	} else {
-		console.log('F5 call failed with error: ', f5Response.status_txt)
+		//console.log('F5 call failed with error: ', f5Response.status_txt)
 		throw new Meteor.Error(500, 'F5 call failed with error: ' + f5Response.status_txt)
 	}
 }
