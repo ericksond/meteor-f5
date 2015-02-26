@@ -13,7 +13,7 @@ var f5Initialize = function() {
 	return (Meteor.settings.f5.user + ':' +  Meteor.settings.f5.password)
 }
 
-F5.nodeState = function(baseUrl, partition, nodeName) {
+F5.getNodeStats = function(baseUrl, partition, nodeName) {
 	var url = baseUrl + '/mgmt/tm/ltm/node/~' + partition + '~' + nodeName + '/stats'
   var f5Auth = f5Initialize()
   var f5Response = HTTP.call("GET", url, {
@@ -30,12 +30,51 @@ F5.nodeState = function(baseUrl, partition, nodeName) {
 	}
 }
 
-F5.poolState = function(baseUrl, partition, poolName) {
+F5.forceOffline = function(baseUrl, partition, nodeName) {
+  var url = baseUrl + '/mgmt/tm/ltm/node/~' + partition + '~' + nodeName
+  var f5Auth = f5Initialize()
+
+  var f5Response = HTTP.call("PUT", url, {
+    timeout: 5000,
+    auth: f5Auth,
+    data: {
+      state: "user-down",
+      session: "user-disabled"
+    }
+  })
+
+  if(f5Response && f5Response.statusCode === 200) {
+    console.log(f5Response)
+  } else {
+    console.log('F5 PUT failed with error: ', f5Response.status_txt)
+    throw new Meteor.Error(500, 'F5 PUT failed with error: ', f5Response.status_txt)
+  }
+}
+
+F5.enable = function(baseUrl, partition, nodeName) {
+  var url = baseUrl + '/mgmt/tm/ltm/node/~' + partition + '~' + nodeName
+  var f5Auth = f5Initialize()
+
+  var f5Response = HTTP.call("PUT", url, {
+    timeout: 5000,
+    auth: f5Auth,
+    data: {
+      state: "user-up",
+      session: "user-enabled"
+    }
+  })
+
+  if(f5Response && f5Response.statusCode === 200) {
+    console.log(f5Response)
+  } else {
+    console.log('F5 PUT failed with error: ', f5Response.status_txt)
+    throw new Meteor.Error(500, 'F5 PUT failed with error: ', f5Response.status_txt)
+  }
+}
+
+F5.getPoolStats = function(baseUrl, partition, poolName) {
   
 }
 
-Meteor.methods({
-	'f5NodeState': function(baseUrl, partition, nodeName) {
-		return F5.nodeState(baseUrl, partition, nodeName)
-	}
-})
+// curl -sk -u admin:admin https://192.168.6.5/mgmt/tm/ltm/pool/testpool/members/~Common~192.168.101.11:8000/ \
+// -H "Content-Type: application/json" -X PUT -d '{"state": "user-down", "session": "user-disabled"}'
