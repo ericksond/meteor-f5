@@ -44,7 +44,8 @@ F5.forceOffline = function(baseUrl, partition, nodeName) {
   })
 
   if(f5Response && f5Response.statusCode === 200) {
-    console.log(f5Response)
+    //console.log(f5Response)
+    return f5Response 
   } else {
     console.log('F5 PUT failed with error: ', f5Response.status_txt)
     throw new Meteor.Error(500, 'F5 PUT failed with error: ', f5Response.status_txt)
@@ -65,7 +66,8 @@ F5.enable = function(baseUrl, partition, nodeName) {
   })
 
   if(f5Response && f5Response.statusCode === 200) {
-    console.log(f5Response)
+    //console.log(f5Response)
+    return f5Response
   } else {
     console.log('F5 PUT failed with error: ', f5Response.status_txt)
     throw new Meteor.Error(500, 'F5 PUT failed with error: ', f5Response.status_txt)

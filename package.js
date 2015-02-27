@@ -1,6 +1,6 @@
 Package.describe({
   name: 'ericksond:f5',
-  version: '0.0.4',
+  version: '0.0.5',
   summary: 'Meteor package to interface with F5 REST API',
   git: 'https://github.com/ericksond/meteor-f5',
   documentation: 'README.md'
