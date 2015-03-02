@@ -13,6 +13,22 @@ var f5Initialize = function() {
 	return (Meteor.settings.f5.user + ':' +  Meteor.settings.f5.password)
 }
 
+F5.getInstanceStatus = function(baseUrl) {
+  var url = baseUrl + '/mgmt/tm/ltm'
+  var f5Auth = f5Initialize()
+  var f5Response = HTTP.call('GET', url, {
+    timeout: 5000,
+    auth: f5Auth
+  })
+
+  if(f5Response && f5Response.statusCode === 200) {
+    return 'up'
+  } else {
+    return 'down'
+  }
+
+}
+
 F5.getNodeStats = function(baseUrl, partition, nodeName) {
 	var url = baseUrl + '/mgmt/tm/ltm/node/~' + partition + '~' + nodeName + '/stats'
   var f5Auth = f5Initialize()
@@ -78,5 +94,3 @@ F5.getPoolStats = function(baseUrl, partition, poolName) {
   
 }
 
-// curl -sk -u admin:admin https://192.168.6.5/mgmt/tm/ltm/pool/testpool/members/~Common~192.168.101.11:8000/ \
-// -H "Content-Type: application/json" -X PUT -d '{"state": "user-down", "session": "user-disabled"}'
