@@ -6,7 +6,7 @@ var init = function(url, method, data) {
 		throw new Meteor.Error(500, 'Please configure F5 settings.json')
 	}
 
-  console.log(url, method, data)
+  //console.log(url, method, data)
 
 	if(!Meteor.settings.f5.user)
 		console.log('Missing user parameter in settings.json')
@@ -57,6 +57,12 @@ F5.getAllNodesStats = function(instance) {
   var url = instance+ '/mgmt/tm/ltm/node/stats'
   var response = init(url, 'GET')
   //console.log('response: ', response)
+  return response
+}
+
+F5.getAllPoolsStats = function(instance) {
+  var url = instance+ '/mgmt/tm/ltm/pool/stats'
+  var response = init(url, 'GET')
   return response
 }
 
